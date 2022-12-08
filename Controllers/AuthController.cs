@@ -1,57 +1,37 @@
-using apidemo.Models.Users;
+using apidemo.Models.Auth;
 using apidemo.Service;
-using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apidemo.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private IUserService _userService;
-    private IMapper _mapper;
-    
-    public AuthController(
-        IUserService userService,
-        IMapper mapper)
+    private IAuthService _authService;
+
+    public AuthController(IAuthService authService)
     {
-        _userService = userService;
-        _mapper = mapper;
+        _authService = authService;
     }
 
+    [HttpPost("login")]
+    public IActionResult Authenticate(AuthenticateRequest model)
+    {
+        var response = _authService.Authenticate(model);
+        Console.WriteLine(model.Username);
+        Console.WriteLine(model.Password);
+        if (response == null)
+            return BadRequest(new { message = "Username or password is incorrect" });
+        return Ok(response);
+    }
+
+    [Authorize]
     [HttpGet]
     public IActionResult GetAll()
     {
-        var users = _userService.GetAll();
+        var users = _authService.GetAll();
         return Ok(users);
-    }
-
-    [HttpGet("{id}")]
-    public IActionResult GetById(int id)
-    {
-        var user = _userService.GetById(id);
-        return Ok(user);
-    }
-
-    [HttpPost]
-    public IActionResult Create(CreateRequest model)
-    {
-        _userService.Create(model);
-        return Ok(new { message = "User created" });
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, UpdateRequest model)
-    {
-        _userService.Update(id, model);
-        return Ok(new { message = "User updated" });
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        _userService.Delete(id);
-        return Ok(new { message = "User deleted" });
     }
 }

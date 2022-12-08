@@ -35,3 +35,7 @@
 /Users/ngoquangdai/Documents/HK_III/ASP_NET/apidemo/apidemo/bin/Debug/net6.0/AutoMapper.dll
 /Users/ngoquangdai/Documents/HK_III/ASP_NET/apidemo/apidemo/bin/Debug/net6.0/BCrypt.Net-Next.dll
 /Users/ngoquangdai/Documents/HK_III/ASP_NET/apidemo/apidemo/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/ngoquangdai/Documents/HK_III/ASP_NET/apidemo/apidemo/bin/Debug/net6.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/ngoquangdai/Documents/HK_III/ASP_NET/apidemo/apidemo/bin/Debug/net6.0/Microsoft.IdentityModel.Logging.dll
+/Users/ngoquangdai/Documents/HK_III/ASP_NET/apidemo/apidemo/bin/Debug/net6.0/Microsoft.IdentityModel.Tokens.dll
+/Users/ngoquangdai/Documents/HK_III/ASP_NET/apidemo/apidemo/bin/Debug/net6.0/System.IdentityModel.Tokens.Jwt.dll

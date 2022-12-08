@@ -5,7 +5,7 @@ using AutoMapper;
 
 namespace apidemo.Service;
 
-public interface IUserService
+public partial interface IUserService
 {
     IEnumerable<Users> GetAll();
     Users GetById(int id);
