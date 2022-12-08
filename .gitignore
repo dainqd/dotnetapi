@@ -1,0 +1,6 @@
+appsettings.json
+# .NET compiled files
+bin
+obj
+
+Migrations
