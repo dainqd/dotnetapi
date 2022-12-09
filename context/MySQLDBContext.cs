@@ -11,4 +11,11 @@ public class MySQLDBContext : DbContext
     {
         
     }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<Users>()
+            .HasIndex(o => new { o.Username });
+    }
 }

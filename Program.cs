@@ -39,7 +39,7 @@ var builder = WebApplication.CreateBuilder(args);
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
     // configure DI for application services
-    services.AddScoped<IAuthService, AuthService>();
+    // services.AddScoped<IAuthService, AuthService>();
 }
 
 builder.Services.AddControllers();
