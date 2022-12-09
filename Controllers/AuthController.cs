@@ -1,10 +1,10 @@
 using apidemo.Hepper;
 using apidemo.Models.Users;
-using apidemo.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using WebApi.Services;
 
 namespace apidemo.Controllers;
 
@@ -57,12 +57,12 @@ public class AuthController : ControllerBase
     }
     
     // [Authorize("Admin")]
-    [HttpPost]
-    public IActionResult Create(CreateRequest model)
-    {
-        _userService.Create(model);
-        return Ok(new { message = "User created" });
-    }
+    // [HttpPost]
+    // public IActionResult Create(CreateRequest model)
+    // {
+    //     _userService.Create(model);
+    //     return Ok(new { message = "User created" });
+    // }
 
     // [Authorize("Admin")]
     [HttpPut("{id}")]

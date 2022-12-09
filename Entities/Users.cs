@@ -13,7 +13,7 @@ public class Users
     public string Username { get; set; }
     
     [JsonIgnore]
-    public string Password { get; set; }
+    public string PasswordHash { get; set; }
     
     public Role Role { get; set; }
 }
