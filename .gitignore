@@ -1,0 +1,9 @@
+appsettings.json
+appsettings.Development.json
+
+bin
+obj
+Properties
+Migrations
+.gitignore
+apidemo.csproj

@@ -1,23 +1,45 @@
+using apidemo.Hepper;
 using apidemo.Models.Users;
 using apidemo.Service;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace apidemo.Controllers;
 
 [Route("api/[controller]")]
+// [Authorize]
 [ApiController]
 public class AuthController : ControllerBase
 {
     private IUserService _userService;
     private IMapper _mapper;
+    private readonly AppSettings _appSettings;
     
     public AuthController(
         IUserService userService,
-        IMapper mapper)
+        IMapper mapper,
+        IOptions<AppSettings> appSettings)
     {
         _userService = userService;
         _mapper = mapper;
+    }
+    
+    [AllowAnonymous]
+    [HttpPost("authenticate")]
+    public IActionResult Authenticate(AuthenticateRequest model)
+    {
+        var response = _userService.Authenticate(model);
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public IActionResult Register(RegisterRequest model)
+    {
+        _userService.Register(model);
+        return Ok(new { message = "Registration successful" });
     }
 
     [HttpGet]
@@ -33,7 +55,8 @@ public class AuthController : ControllerBase
         var user = _userService.GetById(id);
         return Ok(user);
     }
-
+    
+    // [Authorize("Admin")]
     [HttpPost]
     public IActionResult Create(CreateRequest model)
     {
@@ -41,6 +64,7 @@ public class AuthController : ControllerBase
         return Ok(new { message = "User created" });
     }
 
+    // [Authorize("Admin")]
     [HttpPut("{id}")]
     public IActionResult Update(int id, UpdateRequest model)
     {
@@ -48,6 +72,7 @@ public class AuthController : ControllerBase
         return Ok(new { message = "User updated" });
     }
 
+    // [Authorize("Admin")]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
