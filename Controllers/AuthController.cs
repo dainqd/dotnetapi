@@ -57,12 +57,12 @@ public class AuthController : ControllerBase
     }
     
     // [Authorize("Admin")]
-    // [HttpPost]
-    // public IActionResult Create(CreateRequest model)
-    // {
-    //     _userService.Create(model);
-    //     return Ok(new { message = "User created" });
-    // }
+    [HttpPost]
+    public IActionResult Create(CreateRequest model)
+    {
+        _userService.Create(model);
+        return Ok(new { message = "User created" });
+    }
 
     // [Authorize("Admin")]
     [HttpPut("{id}")]

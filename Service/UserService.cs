@@ -16,6 +16,7 @@ public interface IUserService
     void Register(RegisterRequest model);
     void Update(int id, UpdateRequest model);
     void Delete(int id);
+    public void Create(CreateRequest model);
 }
 
 public class UserService : IUserService
@@ -39,7 +40,7 @@ public class UserService : IUserService
         var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
 
         // validate
-        if (user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
+        if (user == null || !BCrypt.Verify(model.Password, user.Password))
             throw new AppException("Username or password is incorrect");
 
         // authentication successful
@@ -63,12 +64,21 @@ public class UserService : IUserService
         // validate
         if (_context.Users.Any(x => x.Username == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
+        
+        if (model.Username == null || model.Password == null)
+            throw new AppException("Username or Password invalid!");
+
+        if(model.Password.Length<6)
+            throw new AppException("Password invalid!");
+        
+        if (model.Password != model.ConfirmPassword)
+            throw new AppException("Password or Password Confirm incorrect!");
 
         // map model to new user object
         var user = _mapper.Map<Users>(model);
 
         // hash password
-        user.PasswordHash = BCrypt.HashPassword(model.Password);
+        user.Password = BCrypt.HashPassword(model.Password);
 
         // save user
         _context.Users.Add(user);
@@ -82,10 +92,16 @@ public class UserService : IUserService
         // validate
         if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
             throw new AppException("Username '" + model.Username + "' is already taken");
+        
+        if(model.Password.Length<6)
+            throw new AppException("Password invalid!");
 
-        // hash password if it was entered
+        if (model.Password != model.ConfirmPassword)
+            throw new AppException("Password or Password Confirm incorrect!");
+
+            // hash password if it was entered
         if (!string.IsNullOrEmpty(model.Password))
-            user.PasswordHash = BCrypt.HashPassword(model.Password);
+            user.Password = BCrypt.HashPassword(model.Password);
 
         // copy model to user and save
         _mapper.Map(model, user);
@@ -108,4 +124,31 @@ public class UserService : IUserService
         if (user == null) throw new KeyNotFoundException("User not found");
         return user;
     }
+    
+    public void Create(CreateRequest model)
+    {
+        // validate
+        if (_context.Users.Any(x => x.Username == model.Username))
+            throw new AppException("User with the username '" + model.Username + "' already exists");
+
+        if (model.Username == null || model.Password == null)
+            throw new AppException("Username or Password invalid!");
+
+        if(model.Password.Length<6)
+            throw new AppException("Password invalid!");
+        
+        if (model.Password != model.ConfirmPassword)
+            throw new AppException("Password or Password Confirm incorrect!");
+
+        // map model to new user object
+        var user = _mapper.Map<Users>(model);
+
+        // hash password
+        user.Password = BCrypt.HashPassword(model.Password);
+
+        // save user
+        _context.Users.Add(user);
+        _context.SaveChanges();
+    }
+
 }
