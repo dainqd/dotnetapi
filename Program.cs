@@ -17,7 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
         var connectionString = builder.Configuration.GetConnectionString("connectionString");
         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
     });
+    
     services.AddCors();
+    
     services.AddControllers().AddJsonOptions(x =>
     {
         // serialize enums as strings in api responses (e.g. Role)
@@ -65,6 +67,7 @@ app.UseMiddleware<JwtMiddleware>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
