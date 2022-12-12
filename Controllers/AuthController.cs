@@ -42,6 +42,7 @@ public class AuthController : ControllerBase
         return Ok(new { message = "Registration successful" });
     }
 
+    [Authorize]
     [HttpGet]
     public IActionResult GetAll()
     {
@@ -49,6 +50,7 @@ public class AuthController : ControllerBase
         return Ok(users);
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
@@ -56,7 +58,7 @@ public class AuthController : ControllerBase
         return Ok(user);
     }
     
-    // [Authorize("Admin")]
+    [Authorize]
     [HttpPost]
     public IActionResult Create(CreateRequest model)
     {
@@ -64,7 +66,7 @@ public class AuthController : ControllerBase
         return Ok(new { message = "User created" });
     }
 
-    // [Authorize("Admin")]
+    [Authorize]
     [HttpPut("{id}")]
     public IActionResult Update(int id, UpdateRequest model)
     {
@@ -72,7 +74,7 @@ public class AuthController : ControllerBase
         return Ok(new { message = "User updated" });
     }
 
-    // [Authorize("Admin")]
+    [Authorize]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
