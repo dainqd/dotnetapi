@@ -14,7 +14,8 @@ public interface IUserService
     IEnumerable<Users> GetAll();
     Users GetById(int id);
     void Register(RegisterRequest model);
-    void Update(int id, UpdateRequest model);
+    void ChangPass(int id, ChangePasswordRequest model);
+    void UpdateInfo(int id, UpdateRequest model);
     void Delete(int id);
     public void Create(CreateRequest model);
 }
@@ -85,23 +86,32 @@ public class UserService : IUserService
         _context.SaveChanges();
     }
 
-    public void Update(int id, UpdateRequest model)
+    public void ChangPass(int id, ChangePasswordRequest model)
     {
         var user = getUser(id);
-
-        // validate
-        if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
-            throw new AppException("Username '" + model.Username + "' is already taken");
         
-        if(model.Password.Length<6)
+        if(model.Password.Length<6 || model.OldPassword.Length<6)
             throw new AppException("Password invalid!");
 
         if (model.Password != model.ConfirmPassword)
             throw new AppException("Password or Password Confirm incorrect!");
 
-            // hash password if it was entered
-        if (!string.IsNullOrEmpty(model.Password))
-            user.Password = BCrypt.HashPassword(model.Password);
+        // hash password if it was entered
+        if (!string.IsNullOrEmpty(model.OldPassword))
+            user.Password = BCrypt.HashPassword(model.OldPassword);
+
+        // copy model to user and save
+        _mapper.Map(model, user);
+        _context.Users.Update(user);
+        _context.SaveChanges();
+    }
+
+    public void UpdateInfo(int id, UpdateRequest model)
+    {
+        var user = getUser(id);
+        
+        if(model.Username == null)
+            throw new AppException("Username invalid!");
 
         // copy model to user and save
         _mapper.Map(model, user);

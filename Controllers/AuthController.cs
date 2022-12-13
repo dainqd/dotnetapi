@@ -65,12 +65,20 @@ public class AuthController : ControllerBase
         _userService.Create(model);
         return Ok(new { message = "User created" });
     }
+    
+    [Authorize]
+    [HttpPut("changpass/{id}")]
+    public IActionResult ChangPass(int id, ChangePasswordRequest model)
+    {
+        _userService.ChangPass(id, model);
+        return Ok(new { message = "Change Password Success!" });
+    }
 
     [Authorize]
-    [HttpPut("{id}")]
+    [HttpPut("updateinfo/{id}")]
     public IActionResult Update(int id, UpdateRequest model)
     {
-        _userService.Update(id, model);
+        _userService.UpdateInfo(id, model);
         return Ok(new { message = "User updated" });
     }
 
