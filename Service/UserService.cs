@@ -96,12 +96,15 @@ public class UserService : IUserService
         if (model.Password != model.ConfirmPassword)
             throw new AppException("Password or Password Confirm incorrect!");
 
+        
+        if (!BCrypt.Verify(model.OldPassword, user.Password))
+            throw new AppException("Old password is incorrect!");
+        
         // hash password if it was entered
-        if (!string.IsNullOrEmpty(model.OldPassword))
-            user.Password = BCrypt.HashPassword(model.OldPassword);
+        if (!string.IsNullOrEmpty(model.Password))
+            user.Password = BCrypt.HashPassword(model.Password);
 
         // copy model to user and save
-        _mapper.Map(model, user);
         _context.Users.Update(user);
         _context.SaveChanges();
     }

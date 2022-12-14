@@ -67,7 +67,7 @@ public class AuthController : ControllerBase
     }
     
     [Authorize]
-    [HttpPut("changpass/{id}")]
+    [HttpPut("change-pass/{id}")]
     public IActionResult ChangPass(int id, ChangePasswordRequest model)
     {
         _userService.ChangPass(id, model);
@@ -75,7 +75,7 @@ public class AuthController : ControllerBase
     }
 
     [Authorize]
-    [HttpPut("updateinfo/{id}")]
+    [HttpPut("update-info/{id}")]
     public IActionResult Update(int id, UpdateRequest model)
     {
         _userService.UpdateInfo(id, model);
